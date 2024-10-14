@@ -16,5 +16,6 @@ function replaceHtml(page, product) {
 function myDate() {
     return Date();
 }
-export { replaceHtml, myDate }
+export { replaceHtml, myDate } // using ES module
+// module.exports = { replaceHtml, myDate }; // using commonJS
 

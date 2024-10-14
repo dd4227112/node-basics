@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "name": "APPLE iPhone SE",
+        "color": "Black",
+        "ROM": 128,
+        "price": 990,
+        "modelName": "iPhone SE",
+        "modelNumber": "MHGT3HN/A",
+        "size": "11.94 cm (4.7 inch) Retina HD Display",
+        "camera": "12MP Rear Camera | 7MP Front Camera",
+        "description": "Widescreen HD LCD Retina Multi-touch IPS Display (1400:1 Contrast Ratio, True Tone Display)",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Samsung Galaxy S21",
+        "color": "Phantom Gray",
+        "ROM": 256,
+        "price": 850,
+        "modelName": "Galaxy S21",
+        "modelNumber": "SM-G991BZAAEUA",
+        "size": "15.8 cm (6.2 inch) Dynamic AMOLED Display",
+        "camera": "64MP Rear Camera | 10MP Front Camera",
+        "description": "Super Smooth 120Hz AMOLED Display, 4000mAh battery, 5G enabled",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Google Pixel 5",
+        "color": "Just Black",
+        "ROM": 128,
+        "price": 699,
+        "modelName": "Pixel 5",
+        "modelNumber": "GD1YQ",
+        "size": "15.7 cm (6.0 inch) OLED Display",
+        "camera": "12.2MP Rear Camera | 8MP Front Camera",
+        "description": "90Hz refresh rate, Qualcomm Snapdragon 765G, IP68 water resistance",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    },
+    {
+        "id": 4,
+        "name": "OnePlus 9 Pro",
+        "color": "Pine Green",
+        "ROM": 256,
+        "price": 969,
+        "modelName": "OnePlus 9 Pro",
+        "modelNumber": "LE2121",
+        "size": "17.02 cm (6.7 inch) Fluid AMOLED Display",
+        "camera": "48MP Rear Camera | 16MP Front Camera",
+        "description": "120Hz display, Hasselblad Camera, Snapdragon 888, 5G",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Sony Xperia 1 III",
+        "color": "Frosted Black",
+        "ROM": 512,
+        "price": 1299,
+        "modelName": "Xperia 1 III",
+        "modelNumber": "XQ-BC72",
+        "size": "16.5 cm (6.5 inch) 4K OLED Display",
+        "camera": "12MP Triple Rear Camera | 8MP Front Camera",
+        "description": "4K HDR OLED, 120Hz refresh rate, Snapdragon 888, 5G",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Xiaomi Mi 11",
+        "color": "Horizon Blue",
+        "ROM": 256,
+        "price": 749,
+        "modelName": "Mi 11",
+        "modelNumber": "M2011K2G",
+        "size": "16.94 cm (6.81 inch) AMOLED Display",
+        "camera": "108MP Rear Camera | 20MP Front Camera",
+        "description": "Quad curved display, 120Hz refresh rate, Snapdragon 888",
+        "productImage": "http://atlas-content-cdn.pixelsquid.com/stock-images/iphone-x-smartphone-xwVXQLD-600.jpg"
+    }
+]

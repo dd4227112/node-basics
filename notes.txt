@@ -1,0 +1,14 @@
+ ##### YOUTUBE LINK ########
+https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_LhxS
+
+1. Node help us to excute javscript code outside of the browser
+2. _ is the special variable that hold the value of the previous express 
+3. We use require('module_name') function to import module in node js
+4. readline is the module used to read user input from nodejs terminal. It return an object
+5. fs is the module used to read and write file in nodejs. It return an object
+6. Read about Javascript premises
+7. We use http module to create a web server, use http module which return an object
+8. In nodejs we can not use static file directly(i.e icluding css, js files)
+9. Json data must be converted into Javascript object using JSON.parse(json_data) function
+10. We use url module to take the full url including query string by setting true in parse method.It return an object
+

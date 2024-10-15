@@ -145,33 +145,124 @@
     });
 */
 
-/* LECTURE 20 CREATING  EVENT EMITER, LISTENER AND HANDLER
 
-*/
 // creating server using event driven artictecture
 import { createServer } from 'node:http'
-import { myDate } from './Modules/index.js'
-
-
 const server = createServer();
-server.on('request', (request, response) => {
-    response.end("Event handling architecture");
+import { myDate } from './Modules/index.js'
+import { createReadStream, readFile } from 'node:fs';
+/* LECTURE 20 CREATING  EVENT EMITER, LISTENER AND HANDLER
 
-});
+
+
+    server.on('request', (request, response) => {
+        response.end("Event handling architecture");
+
+    });
+    server.listen(8000, '127.0.0.1', () => {
+        console.log('Server started at: ' + myDate() + '.\nServer running at http://127.0.0.1:8000/');
+
+    });
+    server.on('close', () => {
+        console.log('Server stoped at: ' + myDate());
+
+    });
+
+    // server.listen(8000, '127.0.0.1', () => {
+    //     console.log('Server started at: ' + myDate());
+
+    });
+*/
+
+/* LECTURE 21  CUSTOM EVENT 
+    //  from event module import events emitter class
+    // import { EventEmitter } from 'node:events';
+    import { User } from './Modules/user.js';
+    // create instance of the class eventEmitter
+    // let myEmitter = new EventEmitter();
+
+    // create instance of the  user class from our module
+
+    let myEmitter = new User();
+
+
+
+    // listen to the event and call event handler
+    myEmitter.on('userCreated', // listen event (userCreated)
+        () => {
+            console.log('A user created successfully') // event handler
+        });
+    // emit an event
+    myEmitter.emit('userCreated'); // event named userCreated emited //We emit after defining event listener 
+
+    // adding parameter on listening and emiting event
+
+    // listen to the event and call event handler
+    myEmitter.on('userUpdated', (id, name) => {
+        console.log(`A user  name ${name} with ID ${id} updated successfully`) // event handler
+    });
+    // emit an event (we can listen the same event mutiple times with different event handler)
+    myEmitter.on('userUpdated', (id, name) => {
+        console.log(`A user  name ${name} with ID ${id} deleted successfully`) // event handler
+    });
+    // emit an event
+    myEmitter.emit('userCreated'); // event named userCreated emited //We emit after defining event listener 
+
+    // emit an event
+    myEmitter.emit('userUpdated', 5, 'David'); // event named userCreated emited //We emit after defining event listener // passing parameter on emitting event (id, name)
+*/
 server.listen(8000, '127.0.0.1', () => {
-    console.log('Server started at: ' + myDate());
-
-});
-server.on('close', () => {
-    console.log('Server stoped at: ' + myDate());
+    console.log('Server started at: ' + myDate() + '.\nServer running at http://127.0.0.1:8000/');
 
 });
 
+/* LECTURE 22 -24 STREAM 
+    // SOLUTION 1: WITHOUT READABLE OR WRITABLE STREAM
+    // server.on('request', (request, response) => {
+    //     readFile('./Files/large_file.txt', 'utf-8', (error, data) => {
+    //         if (error) {
+    //             response.end('Something went wrong. ' + error.message);
+    //             return;
+    //         }
+    //         response.end(data);
+    //     });
+    // });
+    // SOLUTION 2: USING READABLE OR WRITABLE STREAM
+    // server.on('request', (request, response) => {
+    //     let chunckData = createReadStream('./Files/large_file.txt');// it read the content of the file in chunks. It emit the data event and assing the chunck data in chunk variable
+    //     chunckData.on('data', (chunck) => {
+    //         response.write(chunck); // we use write method to output chuck data to response for each chunck
+    //     });
 
-// server.listen(8000, '127.0.0.1', () => {
-//     console.log('Server started at: ' + myDate());
+    //     chunckData.on('error', (error) => { // createReadStream  emit error event in case if error occured
+    //         response.end('Something went wrong. ' + error.message);
+    //     });
 
-// });
+    //     chunckData.on('end', () => { // createReadStream  emit end event after reading all chunck. Now we can end method on the server response
+    //         response.end();
+    //     });
+
+    // });
+    // SOLUTION 3: USING PIPE ( To equalize the reading and writting speed)*/
+    server.on('request', (request, response) => {
+
+        let chunckData = createReadStream('./Files/large_file.txt');
+            chunckData.on('error', (error) => { // createReadStream  emit error event in case if error occured
+                response.end('Something went wrong. ' + error.message);
+            });
+        chunckData.pipe(response); // call pipe method and pass the stream type, i.e writableStream which is the response in this case
+    });
+
+
+
+
+
+
+
+
+
+
+
 
 
 

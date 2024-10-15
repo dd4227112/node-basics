@@ -11,4 +11,10 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 8. In nodejs we can not use static file directly(i.e icluding css, js files)
 9. Json data must be converted into Javascript object using JSON.parse(json_data) function
 10. We use url module to take the full url including query string by setting true in parse method.It return an object
+11. We can create a custom event by importing event module from node. Event module gives custom event emitter.
+12. stream help us to read/ write/ request files/data in chucks.
+13. Run npm init to create initial configuration details of application. It create  a json file named package.json
+14. We install regural dependencies package by running npm install package_name ( optionally we can specify version we want by using @, ie package_name@5.1 otherwise latest version wil be installed). packages are stored in node_modules folders ( These are regural dependencies and are required for working of our application)
+15. we install development  dependencies package ( required for fasten development only) by running npm install package_name --save-dev ( We add this  --save-dev to mean that it the development dependencies)
+16. Nodemon is the development package that used to restart the development automatically each time we make changes in our node application. Install it globally since can be used for all node applications ( add -g to install gloabll).ie npm install -g nodemon --save-dev or run shortcut npm i -g nodemon --save-dev
 

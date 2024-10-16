@@ -17,4 +17,6 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 14. We install regural dependencies package by running npm install package_name ( optionally we can specify version we want by using @, ie package_name@5.1 otherwise latest version wil be installed). packages are stored in node_modules folders ( These are regural dependencies and are required for working of our application)
 15. we install development  dependencies package ( required for fasten development only) by running npm install package_name --save-dev ( We add this  --save-dev to mean that it the development dependencies)
 16. Nodemon is the development package that used to restart the development automatically each time we make changes in our node application. Install it globally since can be used for all node applications ( add -g to install gloabll).ie npm install -g nodemon --save-dev or run shortcut npm i -g nodemon --save-dev
-
+17. Main dependencies for nodejs application are Google V8 Engine and LIBUV
+18. Google V8 Engine (responsible for excuting javscript code and translating javascript code to machine language that computer can read and understand)
+19. LIBUV (Give  nodejs ability to access computer resources like files, OS, networking et. It implement two mai features of node (Event Loop and Thread Pool) )

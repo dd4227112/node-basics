@@ -150,7 +150,7 @@
 import { createServer } from 'node:http'
 const server = createServer();
 import { myDate } from './Modules/index.js'
-import { createReadStream, readFile } from 'node:fs';
+import { createReadStream, readFile, writeFile } from 'node:fs';
 /* LECTURE 20 CREATING  EVENT EMITER, LISTENER AND HANDLER
 
 
@@ -211,8 +211,8 @@ import { createReadStream, readFile } from 'node:fs';
     // emit an event
     myEmitter.emit('userUpdated', 5, 'David'); // event named userCreated emited //We emit after defining event listener // passing parameter on emitting event (id, name)
 */
-server.listen(8000, '127.0.0.1', () => {
-    console.log('Server started at: ' + myDate() + '.\nServer running at http://127.0.0.1:8000/');
+server.listen(8005, '127.0.0.1', () => {
+    console.log('Server started at: ' + myDate() + '.\nServer running at http://127.0.0.1:8005/');
 
 });
 
@@ -244,15 +244,39 @@ server.listen(8000, '127.0.0.1', () => {
 
     // });
     // SOLUTION 3: USING PIPE ( To equalize the reading and writting speed)*/
-    server.on('request', (request, response) => {
+server.on('request', (request, response) => {
 
-        let chunckData = createReadStream('./Files/large_file.txt');
-            chunckData.on('error', (error) => { // createReadStream  emit error event in case if error occured
-                response.end('Something went wrong. ' + error.message);
-            });
-        chunckData.pipe(response); // call pipe method and pass the stream type, i.e writableStream which is the response in this case
+    let chunckData = createReadStream('./Files/large_file.txt');
+    chunckData.on('error', (error) => { // createReadStream  emit error event in case if error occured
+        response.end('Something went wrong. ' + error.message);
     });
+    chunckData.pipe(response); // call pipe method and pass the stream type, i.e writableStream which is the response in this case
+});
 
+setTimeout(() => {
+    console.log('Set time out')
+}, 0);
+
+readFile('./Files/large_file.txt', 'utf-8', (error, data) => {
+    console.log(data);
+
+});
+
+setInterval(() => {
+    console.log('Interval set to 10000s');
+}, 1000);
+
+setImmediate(() => {
+    console.log('Set immediate');
+});
+writeFile('./new_notes', '', () => {
+    console.log('file written');
+
+});
+// socket.on('close', () => {
+//     console.log('Connection closed');
+
+// });
 
 
 

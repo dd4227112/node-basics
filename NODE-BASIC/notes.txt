@@ -20,3 +20,6 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 17. Main dependencies for nodejs application are Google V8 Engine and LIBUV
 18. Google V8 Engine (responsible for excuting javscript code and translating javascript code to machine language that computer can read and understand)
 19. LIBUV (Give  nodejs ability to access computer resources like files, OS, networking et. It implement two mai features of node (Event Loop and Thread Pool) )
+20. When creating API with nodejs express, We need to use middleware to attach the body request in request.body
+21. We use use() function to apply express middleware in any route.
+22. a middleware should contain three parameters (request, response, next())

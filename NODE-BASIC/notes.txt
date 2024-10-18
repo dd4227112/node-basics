@@ -23,3 +23,7 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 20. When creating API with nodejs express, We need to use middleware to attach the body request in request.body
 21. We use use() function to apply express middleware in any route.
 22. a middleware should contain three parameters (request, response, next())
+23. morgan package is the third part middleware that help to log the information about the request on the console. It help in development process (npm install morgan)
+24. We use static middleware to serve the static file in express application (static files:html, css, js, image, xls, words etc)
+25. To set the nodejs environment, we run this is terminal set VARIABLE_NAME = variable_value
+26. We use dotenv package to tell node abaout our environment variables and be able to identify them in node process (npm install dotenv)

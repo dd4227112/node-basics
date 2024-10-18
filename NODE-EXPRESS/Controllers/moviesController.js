@@ -3,6 +3,51 @@ const fileSystem = require('fs');
 const moviesJson = fileSystem.readFileSync('./Data/movies.json'); // read file synchronously and once
 const moviesData = JSON.parse(moviesJson) // convert json data into javascript object
 
+// create  a middleware function that check if movie with the requested id exist
+module.exports.checkId = ((request, response, next, value) => {
+    let movie = moviesData.find((element) => {  // find the movies with id = id it iterate though all moviesData assign the object to element ; alternative 2
+        if (element.id === parseInt(value)) {
+            return element
+        }
+    });
+    if (!movie) { //movieToUpdate === undefined or !movieToUpdate
+        response.status(404).json(
+            {
+                //format data with Jsend Json response
+                status: 'fail',
+                requestedAt: request.createdAt,
+                message: 'Movie with id: ' + value + ' does not exists',
+                data: {
+                    movie: ''
+                }
+            }
+        );
+        return;
+    }
+    next();
+
+});
+
+// middleware to validate requst body
+exports.validatePostBody = ((request, response, next) => {
+
+    if (!request.body.name || !request.body.releaseYear || !request.body.duration) { //movieToUpdate === undefined or !movieToUpdate
+        return response.status(400).json( // 400 bad request
+            {
+                //format data with Jsend Json response
+                status: 'fail',
+                message: 'Invalid Request ',
+                data: {
+                    movie: ''
+                }
+            }
+        );
+
+    }
+    next();
+
+});
+
 module.exports.getAllMovies = (request, response) => {
     //format data with Jsend Json response
     response.status(200).json(
@@ -65,25 +110,26 @@ module.exports.getMovieById = (request, response) => {
             return element
         }
     })
-    //format data with Jsend Json response
-    if (!movie) { //movie === undefined or !movie
-        return response.status(404).json(
-            {
+    // this code has been replace by checkId middleware to remove code duplicate
+    // //format data with Jsend Json response
+    // if (!movie) { //movie === undefined or !movie
+    //     return response.status(404).json(
+    //         {
 
-                status: 'fail',
-                requestedAt:request.createdAt,
-                message: 'Movie with id: ' + id + ' does not exists',
-                data: {
-                    movie: ''
-                }
-            }
-        );
-    }
+    //             status: 'fail',
+    //             requestedAt: request.createdAt,
+    //             message: 'Movie with id: ' + id + ' does not exists',
+    //             data: {
+    //                 movie: ''
+    //             }
+    //         }
+    //     );
+    // }
     //format data with Jsend Json response
     response.status(201).json(
         {
             status: 'success',
-            requestedAt:request.createdAt,
+            requestedAt: request.createdAt,
             data: {
                 movies: movie
             }
@@ -99,21 +145,21 @@ module.exports.updateMovieById = (request, response) => {
             return element
         }
     })
-
-    if (!movieToUpdate) { //movieToUpdate === undefined or !movieToUpdate
-        response.status(404).json(
-            {
-                //format data with Jsend Json response
-                status: 'fail',
-                requestedAt:request.createdAt,
-                message: 'Movie with id: ' + id + ' does not exists',
-                data: {
-                    movie: ''
-                }
-            }
-        );
-        return;
-    }
+    // this code has been replace by checkId middleware to remove code duplicate
+    // if (!movieToUpdate) { //movieToUpdate === undefined or !movieToUpdate
+    //     response.status(404).json(
+    //         {
+    //             //format data with Jsend Json response
+    //             status: 'fail',
+    //             requestedAt: request.createdAt,
+    //             message: 'Movie with id: ' + id + ' does not exists',
+    //             data: {
+    //                 movie: ''
+    //             }
+    //         }
+    //     );
+    //     return;
+    // }
     // find the index of our movieToUpdate
     let index = moviesData.indexOf(movieToUpdate);
     // merge the movieToUpdate with request body
@@ -127,7 +173,7 @@ module.exports.updateMovieById = (request, response) => {
                 {
                     //format data with Jsend Json response
                     status: 'error',
-                    requestedAt:request.createdAt,
+                    requestedAt: request.createdAt,
                     message: err.message,
                     data: {
                         movie: ''
@@ -140,7 +186,7 @@ module.exports.updateMovieById = (request, response) => {
             response.status(200).json(
                 {
                     status: 'success',
-                    requestedAt:request.createdAt,
+                    requestedAt: request.createdAt,
                     data: {
                         movie: movieToUpdate
                     }
@@ -158,20 +204,20 @@ module.exports.deleteMovieById = (request, response) => {
             return element
         }
     })
-
-    if (!movieToDelete) {  // Not found
-        response.status(404).json(
-            {
-                //format data with Jsend Json response
-                status: 'fail',
-                message: 'Movie with id: ' + id + ' does not exists',
-                data: {
-                    movie: ''
-                }
-            }
-        );
-        return;
-    }
+    // this code has been replace by checkId middleware to remove code duplicate
+    // if (!movieToDelete) {  // Not found
+    //     response.status(404).json(
+    //         {
+    //             //format data with Jsend Json response
+    //             status: 'fail',
+    //             message: 'Movie with id: ' + id + ' does not exists',
+    //             data: {
+    //                 movie: ''
+    //             }
+    //         }
+    //     );
+    //     return;
+    // }
     // find the index of our movieToUpdate
     let index = moviesData.indexOf(movieToDelete);
 

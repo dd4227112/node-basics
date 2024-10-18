@@ -1,6 +1,7 @@
 const express = require('express');
-const apiActions = require('./Controllers/FunctionHandlers/movies.js')
+const moviesRoutes = require('./Routes/moviesRoutes')
 const app = express();
+const morgan = require('morgan');
 
 /* ES MODULE
     import express  from 'express'
@@ -10,6 +11,8 @@ const app = express();
 // MIDDLEWERE 
 // use json() middleware to add request body to request object
 app.use(express.json());
+process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : '' // morgan is not function middleware, it return the function middleware, so we call the function morgan()
+app.use(express.static('./public')) // apply the static express middleware to save the static file by passing the path of the static files
 
 // our custom middleware
 function addCreatedAt(request, response, next) {
@@ -34,20 +37,14 @@ app.get('/data', (request, response) => { //make a get route
     response.json(data); // json() used to response in json data format. content-type is automatically set to application/json when use json() function 
 });
 
-// start server
-const port = 8003;
-
-app.listen(port, () => {
-    console.log('Server has started and running at http://127.0.0.1:' + port);
-});
-
 //API WITH EXPRESS
 
 
 //HANDLERS FUNCTION
 
 
-const prefix = '/api/v1/';
+// const prefix = '/api/v1/';
+const prefix = process.env.PREFIX // use environment varibale
 /* ALTERNATIVE TO CREATE ROUTES
     // GET REQUEST - /api/v1/movies'
 
@@ -66,14 +63,31 @@ const prefix = '/api/v1/';
     app.delete(prefix + 'movies/:id/', deleteMovieById);
 */
 
-// since api uses the same endpint, we can chain the using express route function
-app.route(prefix + 'movies')
-    .get(apiActions.getAllMovies)
-    .post(apiActions.createMovie)
+/* NORMAL EXPRESS ROUTES
 
-//  apply middle in this routes bellow
-app.use(addCreatedAt);
-app.route(prefix + 'movies/:id/:name?')  // we name parameter as on option by adding ? mark
-    .get(apiActions.getMovieById)
-    .patch(apiActions.updateMovieById)
-    .delete(apiActions.deleteMovieById)
+    // since api uses the same endpint, we can chain the using express route function
+    app.route(prefix + 'movies')
+        .get(apiActions.getAllMovies)
+        .post(apiActions.createMovie)
+
+    //  apply middle in this routes bellow
+    app.use(addCreatedAt);
+    app.route(prefix + 'movies/:id/:name?')  // we name parameter as on option by adding ? mark
+        .get(apiActions.getMovieById)
+        .patch(apiActions.updateMovieById)
+        .delete(apiActions.deleteMovieById)
+*/
+
+
+// mount routes
+app.use(prefix + 'movies', moviesRoutes)
+
+// start server, we are moving to a separate file(server.js) and this will be our entry file
+// const port = 8003;
+
+// app.listen(port, () => {
+//     console.log('Server has started and running at http://127.0.0.1:' + port);
+// });
+
+//export app module
+module.exports = app;

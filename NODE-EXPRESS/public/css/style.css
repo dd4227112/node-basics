@@ -1,0 +1,135 @@
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background: #007BFF;
+        color: white;
+        padding: 1em 0;
+        text-align: center;
+    }
+
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    nav ul li {
+        display: inline;
+        margin: 0 15px;
+    }
+
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1em 0;
+        background: #f1f1f1;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .container {
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .product-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 20px;
+        padding: 20px;
+        float: left;
+        width: 30%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+
+    .product-card h2 {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .product-card p {
+        color: #666;
+    }
+
+    .product-card .price {
+        color: green;
+        font-weight: bold;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .btn:hover {
+        background-color: #218838;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .product-image {
+        float: left;
+        width: 40%;
+        text-align: center;
+    }
+
+    .product-image img {
+        max-width: 100%;
+        border-radius: 10px;
+    }
+
+    .product-details {
+        float: right;
+        width: 55%;
+    }
+
+    .product-details h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .product-details p {
+        font-size: 18px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        font-size: 24px;
+        font-weight: bold;
+        color: green;
+    }

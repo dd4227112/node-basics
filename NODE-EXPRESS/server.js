@@ -1,7 +1,7 @@
 //import dotenv packege
 const dotenv = require('dotenv');
 // Registered our env to nodejs process. This should the fist before anything else
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './configuration.env' });
 //  import app module
 const app = require('./app');
 // start server

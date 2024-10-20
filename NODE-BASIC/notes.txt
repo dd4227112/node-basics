@@ -27,3 +27,5 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 24. We use static middleware to serve the static file in express application (static files:html, css, js, image, xls, words etc)
 25. To set the nodejs environment, we run this is terminal set VARIABLE_NAME = variable_value
 26. We use dotenv package to tell node abaout our environment variables and be able to identify them in node process (npm install dotenv)
+27. MongoDB datatypr:string, boolean, NumberInt, NumberLong, NumberDecimal, ObjectId ( The same as uuid generated automatically by MongoDB), Date=>(ISODate, Timestamp), Embedde Documents(.ie Products:{...}), Arrays
+28. A document can have maxmum of 60MB. Each document have maxmum 100 embedded document(nested documents)

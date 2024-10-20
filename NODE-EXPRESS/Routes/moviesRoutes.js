@@ -5,7 +5,7 @@ const router = express.Router();
 
 // create a param middleware, this will run on route with parameters ie  api/movies/:id
 // apply checkId middleware from '/Controllers/moviesController'
-router.param('id', apiActions.checkId);
+// router.param('id', apiActions.checkId);
 
 router.route('/')
     .get(apiActions.getAllMovies)

@@ -1,1 +1,44 @@
-[{"id":1,"name":"Inception","releaseYear":2010,"duration":148},{"id":2,"name":"Avatar","releaseYear":1998,"duration":136},{"id":3,"name":"Interstellar","releaseYear":2014,"duration":169},{"id":5,"name":"Pulp Fiction","releaseYear":1994,"duration":154},{"id":6,"name":"Avatar","releaseYear":2000,"duration":152},{"id":7,"name":"Forrest Gump","releaseYear":1994,"duration":142},{"id":8,"name":"Forrest  5","releaseYear":200,"duration":150}]
+[
+    {
+        "id": 1,
+        "name": "Inception",
+        "releaseYear": 2010,
+        "duration": 148
+    },
+    {
+        "id": 2,
+        "name": "Avatar",
+        "releaseYear": 1998,
+        "duration": 136
+    },
+    {
+        "id": 3,
+        "name": "Interstellar",
+        "releaseYear": 2014,
+        "duration": 169
+    },
+    {
+        "id": 5,
+        "name": "Pulp Fiction",
+        "releaseYear": 1994,
+        "duration": 154
+    },
+    {
+        "id": 6,
+        "name": "Avatar",
+        "releaseYear": 2000,
+        "duration": 152
+    },
+    {
+        "id": 7,
+        "name": "Forrest Gump",
+        "releaseYear": 1994,
+        "duration": 142
+    },
+    {
+        "id": 8,
+        "name": "Forrest  5",
+        "releaseYear": 200,
+        "duration": 150
+    }
+]

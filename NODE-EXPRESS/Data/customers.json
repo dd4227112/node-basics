@@ -1,0 +1,68 @@
+[
+    {
+      "name": "Mery",
+      "age": 25,
+      "isMarried": false,
+      "subscription": {
+        "type": "yearly",
+        "renewalDate": {
+          "day": 23,
+          "month": "June",
+          "year": 2022
+        }
+      }
+    },
+    {
+      "name": "John",
+      "age": 32,
+      "isMarried": true,
+      "subscription": {
+        "type": "monthly",
+        "renewalDate": {
+          "day": 5,
+          "month": "January",
+          "year": 2023
+        }
+      }
+    },
+    {
+      "name": "Lucy",
+      "age": 40,
+      "isMarried": false,
+      "subscription": {
+        "type": "weekly",
+        "renewalDate": {
+          "day": 14,
+          "month": "March",
+          "year": 2021
+        }
+      }
+    },
+    {
+      "name": "Tom",
+      "age": 29,
+      "isMarried": true,
+      "subscription": {
+        "type": "yearly",
+        "renewalDate": {
+          "day": 7,
+          "month": "September",
+          "year": 2024
+        }
+      }
+    },
+    {
+      "name": "Sara",
+      "age": 35,
+      "isMarried": false,
+      "subscription": {
+        "type": "monthly",
+        "renewalDate": {
+          "day": 18,
+          "month": "November",
+          "year": 2020
+        }
+      }
+    }
+  ]
+  

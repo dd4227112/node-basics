@@ -1,9 +1,24 @@
 //import dotenv packege
 const dotenv = require('dotenv');
 // Registered our env to nodejs process. This should the fist before anything else
-dotenv.config({ path: './configuration.env' });
+dotenv.config({ path: `${process.cwd()}/.env` });
 //  import app module
+const mongoose = require('mongoose');
 const app = require('./app');
+
+// database  connection
+
+mongoose.connect(process.env.DB_CONNECTION_REMOTE_URL, { useNewUrlParser: true })
+    .then((connect) => {
+        console.log('Database connected..');
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+
+
+
+
 // start server
 // const port = 8003;
 // use the value from env file 

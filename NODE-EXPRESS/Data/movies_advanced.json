@@ -1,0 +1,87 @@
+[
+    {
+      "name": "Riddick",
+      "description": "Left for dead on a sun-scorched planet, Riddick finds himself up against an alien race of predators. His only hope for survival is to activate an emergency beacon.",
+      "duration": 119,
+      "ratings": 6.8,
+      "totalRating": 329,
+      "releaseYear": 2013,
+      "releaseDate": "2013-09-04T00:00:00Z",
+      "genres": ["Action", "Sci-Fi", "Thriller"],
+      "directors": ["David Twohy"],
+      "coverImage": "Riddick-2013.jpg",
+      "actors": ["Vin Diesel", "Karl Urban", "Katee Sackhoff"],
+      "price": 50
+    },
+    {
+      "name": "Edge of Tomorrow",
+      "description": "A soldier fighting aliens gets to relive the same day over and over again, the day restarting every time he dies.",
+      "duration": 113,
+      "ratings": 7.9,
+      "totalRating": 526,
+      "releaseYear": 2014,
+      "releaseDate": "2014-06-06T00:00:00Z",
+      "genres": ["Action", "Adventure", "Sci-Fi"],
+      "directors": ["Doug Liman"],
+      "coverImage": "Edge-of-Tomorrow-2014.jpg",
+      "actors": ["Tom Cruise", "Emily Blunt", "Bill Paxton"],
+      "price": 45
+    },
+    {
+      "name": "Inception",
+      "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.",
+      "duration": 148,
+      "ratings": 8.8,
+      "totalRating": 2095,
+      "releaseYear": 2010,
+      "releaseDate": "2010-07-16T00:00:00Z",
+      "genres": ["Action", "Adventure", "Sci-Fi"],
+      "directors": ["Christopher Nolan"],
+      "coverImage": "Inception-2010.jpg",
+      "actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page"],
+      "price": 60
+    },
+    {
+      "name": "Interstellar",
+      "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+      "duration": 169,
+      "ratings": 8.6,
+      "totalRating": 1860,
+      "releaseYear": 2014,
+      "releaseDate": "2014-11-07T00:00:00Z",
+      "genres": ["Adventure", "Drama", "Sci-Fi"],
+      "directors": ["Christopher Nolan"],
+      "coverImage": "Interstellar-2014.jpg",
+      "actors": ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
+      "price": 65
+    },
+    {
+      "name": "The Matrix",
+      "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+      "duration": 136,
+      "ratings": 8.7,
+      "totalRating": 1624,
+      "releaseYear": 1999,
+      "releaseDate": "1999-03-31T00:00:00Z",
+      "genres": ["Action", "Sci-Fi"],
+      "directors": ["Lana Wachowski", "Lilly Wachowski"],
+      "coverImage": "The-Matrix-1999.jpg",
+      "actors": ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"],
+      "price": 40
+    },
+    {
+      "name": "The Dark Knight",
+      "description": "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.",
+      "duration": 152,
+      "ratings": 9.0,
+      "totalRating": 2400,
+      "releaseYear": 2008,
+      "releaseDate": "2008-07-18T00:00:00Z",
+      "genres": ["Action", "Crime", "Drama"],
+      "directors": ["Christopher Nolan"],
+      "coverImage": "The-Dark-Knight-2008.jpg",
+      "actors": ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
+      "price": 55
+    }
+  ]
+  

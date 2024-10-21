@@ -9,12 +9,13 @@ const router = express.Router();
 
 router.route('/')
     .get(apiActions.getAllMovies)
-    .post(apiActions.validatePostBody, apiActions.createMovie) // middleware chaining( applying multiple middleware on the same routes)
+    // .post(apiActions.validatePostBody, apiActions.createMovie) // middleware chaining( applying multiple middleware on the same routes)
+    .post(apiActions.createMovie)
 
 router.route('/:id/:name?')  // we name parameter as on option by adding ? mark
     .get(apiActions.getMovieById)
     .patch(apiActions.updateMovieById)
-    .delete(apiActions.deleteMovieById) 
+    .delete(apiActions.deleteMovieById)
 
 //export modules
 module.exports = router;

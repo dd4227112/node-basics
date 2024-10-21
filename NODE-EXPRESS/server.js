@@ -8,7 +8,7 @@ const app = require('./app');
 
 // database  connection
 
-mongoose.connect(process.env.DB_CONNECTION_REMOTE_URL, { useNewUrlParser: true })
+mongoose.connect(process.env.DB_CONNECTION_LOCAL_URL, { useNewUrlParser: true })
     .then((connect) => {
         console.log('Database connected..');
     })

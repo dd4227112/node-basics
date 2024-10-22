@@ -23,13 +23,41 @@ exports.validatePostBody = ((request, response, next) => {
 
 module.exports.getAllMovies = async (request, response) => {
     try {
-        const movies = (await Movie.find())
-        // select all movies
+        // select all movies and (or filter)
+        // 1st approach (not recommended)
+        //  const movies = await Movie.find(request.query) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
+
+        // 2nd approach
+        // const movies = await Movie.find()
+        //     .where('name')
+        //     .equals(request.query.name)
+        //     .where('price')
+        //     .equals(request.query.price)
+
+        // 3 rd approach
+        const queryObj = { ...request.query };
+        const exludeQuery = ['page', 'sort', 'limit', 'field'];
+
+        exludeQuery.forEach((element) => {
+            delete queryObj[element]
+        });
+        const movies = await Movie.find(queryObj) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
+
+        // 2nd approach
+        // const movies = await Movie.find()
+        //     .where('name')
+        //     .equals(request.query.name)
+        //     .where('price')
+        //     .gte(request.query.price) / greater then or equal
+        //     .where('rating')
+        //     .gt(request.query.price) // greater then
+
+
         response.status(200).json({ //201- created
             status: 'success',
             count: movies.length,
             data: {
-                movies
+                movies: movies ? movies : movies
             }
         });
 

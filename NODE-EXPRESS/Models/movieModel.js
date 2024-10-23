@@ -13,7 +13,7 @@ const directorNameSchema = new mongoose.Schema({
 });
 const directorSchema = new mongoose.Schema({
     name: {
-        type: [directorNameSchema ],
+        type: [directorNameSchema],
         required: true
     },
     numberOfMovies: {
@@ -59,7 +59,8 @@ const movieSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        select: false // exclude this column when selecting the fields
     },
     genres: {
         type: [String],

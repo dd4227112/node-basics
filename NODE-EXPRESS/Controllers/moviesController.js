@@ -23,6 +23,7 @@ exports.validatePostBody = ((request, response, next) => {
 
 module.exports.getAllMovies = async (request, response) => {
     try {
+        //APPLYING WHERE CONDTIONS
         // select all movies and (or filter)
         // 1st approach (not recommended)
         //  const movies = await Movie.find(request.query) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
@@ -38,12 +39,12 @@ module.exports.getAllMovies = async (request, response) => {
         // covert query parameter into string
 
         const queryObj = { ...request.query };
-        const exludeQuery = ['page', 'sort', 'limit', 'field'];
+        const exludeQuery = ['page', 'sort', 'limit', 'fields'];
 
         exludeQuery.forEach((element) => {
             delete queryObj[element]
         });
-        
+
 
         let stringParams = JSON.stringify(queryObj);
 
@@ -51,9 +52,9 @@ module.exports.getAllMovies = async (request, response) => {
         stringParams = stringParams.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`); // use \b to set exact match, replace all occurance by adding g
         // return back to json
         const queryParams = JSON.parse(stringParams)
-        console.log(queryParams)
+        // console.log(queryParams)
 
-        const movies = await Movie.find(queryParams) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
+        // const movies = await Movie.find(queryParams) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
 
         // 2nd approach
         // const movies = await Movie.find()
@@ -64,12 +65,46 @@ module.exports.getAllMovies = async (request, response) => {
         //     .where('rating')
         //     .gt(request.query.price) // greater then
 
+        // APPLYING SORT FUNCTIONALITY
+        let query = Movie.find(queryParams); // create a query object by removing await keyword
+        //check if sort is passed on query string otherwise let us sort by createdAt (optionally)
+        if (request.query.sort) {
 
+            //  query = query.sort(request.query.sort) //use - negetive for descending order ie sort(-name)
+            // if we have multiple sort key, separate them by space i.e sort('name gender');
+            // how to hanlde multiple sort key
+            const sortKey = request.query.sort.split(',').join(' '); // convert to array then convert to string by seprating them with space
+            query = query.sort(sortKey) //use - negetive for descending order ie sort(-name)
+        } else {
+            query = query.sort('-createdAt')
+        }
+        // LIMITING FIELDS (SELECT SOME COLUMN INSTEAD OF ALL COLUMNS)
+        if (request.query.fields) {
+
+            const selectFiels = request.query.fields.split(',').join(' ');
+            // query = query.
+            query = query.select(selectFiels);
+        } else {
+            query = query.select('-__v'); //exclude column by adding minus - before
+        }
+
+        // PAGINATIONS
+        const page = request.query.page || 1;
+        const limit = request.query.limit || 0;
+        // calculate records to skip
+        const skip = (page - 1) * limit;
+        query = query.skip(skip).limit(limit);
+        // ensure that the document to skip does not exceed the number of document in the database
+        const count = await Movie.countDocuments();
+        if (skip >= count) {
+            throw new Error('Page not Found');
+        }
+        const movies = await query; // Excute the query and assing the result to movies variable
         response.status(200).json({ //201- created
             status: 'success',
             count: movies.length,
             data: {
-                movies: movies ? movies : movies
+                movies
             }
         });
 

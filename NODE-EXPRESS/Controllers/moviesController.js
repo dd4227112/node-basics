@@ -35,13 +35,25 @@ module.exports.getAllMovies = async (request, response) => {
         //     .equals(request.query.price)
 
         // 3 rd approach
+        // covert query parameter into string
+
         const queryObj = { ...request.query };
         const exludeQuery = ['page', 'sort', 'limit', 'field'];
 
         exludeQuery.forEach((element) => {
             delete queryObj[element]
         });
-        const movies = await Movie.find(queryObj) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
+        
+
+        let stringParams = JSON.stringify(queryObj);
+
+        // replace gte, gt, lt,lte with  $gte, $gt.....
+        stringParams = stringParams.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`); // use \b to set exact match, replace all occurance by adding g
+        // return back to json
+        const queryParams = JSON.parse(stringParams)
+        console.log(queryParams)
+
+        const movies = await Movie.find(queryParams) // will fitter movies if query string is passed to endpoint, otherwise will return all movies
 
         // 2nd approach
         // const movies = await Movie.find()

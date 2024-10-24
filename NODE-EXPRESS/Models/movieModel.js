@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const fs = require('node:fs');
 // create collection/moddel schema ( collection blueprint)
 const directorNameSchema = new mongoose.Schema({
     firstName: {
@@ -82,9 +83,102 @@ const movieSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'The releaseYear value is mandatory'],
         min: 10
+    },
+    createdBy: {
+        type: String
     }
+}, {
+    toJSON: { virtuals: true }, // add virtual field on the results when returned as a json
+    toObject: { virtuals: true }
 });
 
+//VIRTUAL FIELDS
+
+// Define a virtual field, these are field that not stored in the database but return on the model object or json. Example are autocalculated values like age from dob field
+//NOTE: CAN NOT be used on document query because they are the part of the database and they are not in the document properties
+movieSchema.virtual('durationInHous').get(function () {
+    return this.duration / 60; //convert duratio from minutes to hours
+});
+// To include virtual field in the query result, pass an option on Schem() on the second parameter and set virtual to true
+
+//DOCUMENT MIDDLEWARE ()
+
+// There are two method, pre before the action in the database or post after the action on the database
+//pre('save')
+// save, will be applied on .save() or .create() only
+// insertMany(), findByIdAndUpdate(), will not work
+movieSchema.pre('save', function (next) {
+    // Here you can do anything on the current document (this)
+    // as example add a createdBy value (curently hard-coded value)
+    this.createdBy = 'David Daniel' // remember to add this column (createdBy in the schema structure)
+    next();  // call next middleware
+});
+
+//
+movieSchema.post('save', function (document, next) { // document is the currently created document, since post run after action on the database and return the created document
+    // Here you can do anything on the current document (document)
+    // as example log some content on the log file 
+    const content = `New Movie with name ${document.name} has been created by ${document.createdBy} on ${document.createdAt};\n`
+    fs.writeFileSync('./Logs/log.txt', content, { flag: 'a' }, (error) => { // flag: 'a' , append the content to the existing content of the file instead of clearing the curremt content
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+    });
+    next();
+
+});
+
+
+//QUERY MIDDLEWARE
+// Thease are excuted on find operations (select data) and return the query object of find method
+// post('find') // will be excuted on .find()
+// movieSchema.pre('find', function (next) {
+//     // as example filter all movies where release is less that current date/time
+//     this.find({
+//         releaseDate: {
+//             $lte: Date.now()
+//         }
+//     })
+//     next();
+// });
+// movieSchema.pre('findOne', function (next) {
+//     // as example filter all movies where release is less that current date/time
+//     this.find({
+//         releaseDate: {
+//             $lte: Date.now()
+//         }
+//     })
+//     next();
+// });
+
+// use regular expression to find all query that start with find and excute the same middleware
+movieSchema.pre(/^find/, function (next) { // pre run before excution/fetching the document
+    // as example filter all movies where release is less that current date/time
+    this.find({
+        releaseDate: {
+            $lte: Date.now()
+        }
+    })
+    this.startTime = Date.now();
+    next();
+});
+
+movieSchema.post(/^find/, function (documents, next) { // post run after excution/fetching the document: post takes 2 parameters
+
+    this.endTime = Date.now();
+    const timeTaken = this.endTime - this.startTime
+    const content = `The Query takes  ${timeTaken} milliseconds \n`
+    fs.writeFileSync('./Logs/log.txt', content, { flag: 'a' }, (error) => { // flag: 'a' , append the content to the existing content of the file instead of clearing the curremt content
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+    });
+    next();
+});
 //create movie model 
 const Movie = mongoose.model('Movie', movieSchema); // create and acces a movies collection from database
 

@@ -6,7 +6,8 @@ const router = express.Router();
 // create a param middleware, this will run on route with parameters ie  api/movies/:id
 // apply checkId middleware from '/Controllers/moviesController'
 // router.param('id', apiActions.checkId);
-
+router.route('/movies-stats').get(apiActions.movieStats);
+router.route('/movies-by-genre/:genre').get(apiActions.getMovieByGenre);
 router.route('/')
     .get(apiActions.getAllMovies)
     // .post(apiActions.validatePostBody, apiActions.createMovie) // middleware chaining( applying multiple middleware on the same routes)

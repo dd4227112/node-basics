@@ -1,0 +1,7 @@
+New Movie with name The Dark Knight 9 has been created by David Daniel on Fri Oct 25 2024 00:34:20 GMT+0300 (East Africa Time);
+New Movie with name The Dark Knight 9 has been created by David Daniel on Fri Oct 25 2024 00:34:20 GMT+0300 (East Africa Time); 
+The Query takes  1729807848119 - 1729807848133 milliseconds 
+The Query takes  (1729807871078 - 1729807871091) milliseconds 
+The Query takes  15 milliseconds 
+The Query takes  4 milliseconds 
+The Query takes  4 milliseconds 

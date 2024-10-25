@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const fs = require('node:fs');
+const validator = require('validator');
+
 // create collection/moddel schema ( collection blueprint)
 const directorNameSchema = new mongoose.Schema({
     firstName: {
@@ -28,6 +30,8 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: [true, 'The name value is mandatory'],
         unique: [true, 'Duplicate movie name is not allowed'],
+        minlength: [4, 'Movie name must be atleast 4 characters. {VALUE} given'], // (minlength & maxlength are used on strings)
+        validate: [validator.isAlpha , 'Movie name should be only alphabets (A-Za-z'], // using validator library for custom validation on mongodb
         trim: true // remove white spaces before and after
     },
     description: {
@@ -43,7 +47,14 @@ const movieSchema = new mongoose.Schema({
     ratings: {
         type: Number,
         default: 1.0,
-        max: [10, 'The rating maxmum value is 10']
+        //  max: [10, 'The rating maxmum value is 10'] // min/ max are used for numbers and date
+        //Let us use a custom validator instead of built-in validator like min,max, enum ..
+        validate: {
+            validator: function (value) {
+                return value >= 1 && value <= 10; //using this keyword in validation function will work only on creating movie but not on update, because this return the object on new document we want to create
+            },
+            message: `Ratings should range btn 1.0 and 10.0, ({VALUE} given )`
+        }
     },
     totalRatings: {
         type: Number,
@@ -56,7 +67,7 @@ const movieSchema = new mongoose.Schema({
     releaseDate: {
         type: Date,
         required: [true, 'The releaseDate value is mandatory'],
-        max: [new Date(), 'No movies released after' + new Date()]
+        max: [new Date("2024-11-25"), 'No movies released after' + new Date("2024-11-25")]
     },
     createdAt: {
         type: Date,
@@ -70,6 +81,10 @@ const movieSchema = new mongoose.Schema({
     directors: {
         type: [String],
         required: [true, 'The Directors value is mandatory'],
+        enum: { //enum ( is the mongodb validator which ensure that only specified values are accepted in the database)
+            values: ['David', 'Daniel', 'Dani'],
+            message: 'The Director name provided is not correct '
+        }
     },
     coverImage: {
         type: String,
@@ -179,6 +194,13 @@ movieSchema.post(/^find/, function (documents, next) { // post run after excutio
     });
     next();
 });
+// AGGREGATE MIDDLEWARE
+movieSchema.pre('aggregate', function (next) { // post run befote any aggregate pipeline, It has pipeline() method which return the aggregate stages as array of objects 
+    // as example filter all movies where release is less that current date/time on aggregate pipeline
+    this.pipeline().unshift({ $match: { releaseDate: { $gte: new Date() } } }); //unshift() add new array at the begining of the current array
+    next();
+});
+
 //create movie model 
 const Movie = mongoose.model('Movie', movieSchema); // create and acces a movies collection from database
 

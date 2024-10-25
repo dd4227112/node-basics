@@ -81,6 +81,13 @@ const prefix = process.env.PREFIX // use environment varibale
 
 // mount routes
 app.use(prefix + 'movies', moviesRoutes)
+// define the defaiult route which will be excuted when the route doesn't match any other route (not found). Remember this be defined as the last routes
+app.all('*', (req, res) => {
+    res.status(404).json({ //200- OK
+        status: 'fail',
+        message: `Can't find ${req.originalUrl} on the server`
+    });
+});
 
 // start server, we are moving to a separate file(server.js) and this will be our entry file
 // const port = 8003;

@@ -5,3 +5,7 @@ The Query takes  (1729807871078 - 1729807871091) milliseconds
 The Query takes  15 milliseconds 
 The Query takes  4 milliseconds 
 The Query takes  4 milliseconds 
+New Movie with name The Dark Knight 10 has been created by David Daniel on Fri Oct 25 2024 22:07:18 GMT+0300 (East Africa Time);
+The Query takes  44 milliseconds 
+The Query takes  56 milliseconds 
+New Movie with name The Dark Knight 12 has been created by David Daniel on Fri Oct 25 2024 22:14:01 GMT+0300 (East Africa Time);

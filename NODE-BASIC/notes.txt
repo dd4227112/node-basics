@@ -29,3 +29,4 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 26. We use dotenv package to tell node abaout our environment variables and be able to identify them in node process (npm install dotenv)
 27. MongoDB datatypr:string, boolean, NumberInt, NumberLong, NumberDecimal, ObjectId ( The same as uuid generated automatically by MongoDB), Date=>(ISODate, Timestamp), Embedde Documents(.ie Products:{...}), Arrays
 28. A document can have maxmum of 60MB. Each document have maxmum 100 embedded document(nested documents)
+29. You can use javascript validator library to validate user inputs on model schema and etc. This library work on for string data types Run npm install validator

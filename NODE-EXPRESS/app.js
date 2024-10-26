@@ -2,6 +2,8 @@ const express = require('express');
 const moviesRoutes = require('./Routes/moviesRoutes')
 const app = express();
 const morgan = require('morgan');
+const CustomError = require('./Utils/CustomError');
+const errorController = require('./Controllers/errorController');
 
 /* ES MODULE
     import express  from 'express'
@@ -11,7 +13,7 @@ const morgan = require('morgan');
 // MIDDLEWERE 
 // use json() middleware to add request body to request object
 app.use(express.json());
-process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : '' // morgan is not function middleware, it return the function middleware, so we call the function morgan()
+process.env.ENVIRONMENT === 'development' ? app.use(morgan('dev')) : '' // morgan is not function middleware, it return the function middleware, so we call the function morgan()
 app.use(express.static('./public')) // apply the static express middleware to save the static file by passing the path of the static files
 
 // our custom middleware
@@ -82,12 +84,39 @@ const prefix = process.env.PREFIX // use environment varibale
 // mount routes
 app.use(prefix + 'movies', moviesRoutes)
 // define the defaiult route which will be excuted when the route doesn't match any other route (not found). Remember this be defined as the last routes
-app.all('*', (req, res) => {
-    res.status(404).json({ //200- OK
-        status: 'fail',
-        message: `Can't find ${req.originalUrl} on the server`
-    });
+app.all('*', (req, res, next) => {
+    // we are going to use global error handling middleware
+    // res.status(404).json({ //200- OK
+    //     status: 'fail',
+    //     message: `Can't find ${req.originalUrl} on the server`
+    // });
+
+    // const err = new Error(`Can't find ${req.originalUrl} on the server`) // javascript error constuctor, It accept the error message
+    // err.statusCode = 404;
+    // err.statusMessage = 'fail';
+
+    /* Let use the CustomError class instead of calling error constructor  as we did above in the commented code*/
+    const err = new CustomError(`Can't find ${req.originalUrl} on the server`, 404)
+
+    //calling the global error middleware, we call next() and pass any value, so when next() is called with any value, express will assume that there is an error then will skip next middleware and call global error middleware
+    next(err);
 });
+
+// ERROR HANDLING
+// // GLOBAL MIDDLEWARE ( This will handle any arror that occured to our application, can be route, model, controller or anything else)
+// // We are going to create a Custom Error class and import it anywhere in our application-->/Utils/CustomError.js
+// app.use((error, request, response, next) => {
+//     error.statusCode = error.statusCode || 500; // if no status code set , use 500 as default
+//     error.statusMessage = error.statusMessage || 'error';//  if no status message set , use error as default
+
+//     response.status(error.statusCode).json({
+//         status: error.statusMessage,
+//         messsage: error.message
+//     })
+//     next();
+// });
+/* We have moved the global middleware code above to errorController-->Controller/errorController.js */
+app.use(errorController);
 
 // start server, we are moving to a separate file(server.js) and this will be our entry file
 // const port = 8003;

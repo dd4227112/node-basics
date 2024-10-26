@@ -51,9 +51,9 @@ const movieSchema = new mongoose.Schema({
         //Let us use a custom validator instead of built-in validator like min,max, enum ..
         validate: {
             validator: function (value) {
-                return value >= 1 && value <= 10; //using this keyword in validation function will work only on creating movie but not on update, because this return the object on new document we want to create
+                return value >= 10 && value <= 100; //using this keyword in validation function will work only on creating movie but not on update, because this return the object on new document we want to create
             },
-            message: `Ratings should range btn 1.0 and 10.0, ({VALUE} given )`
+            message: `Ratings should range btn 10.0 and 100.0, ({VALUE} given )`
         }
     },
     totalRatings: {

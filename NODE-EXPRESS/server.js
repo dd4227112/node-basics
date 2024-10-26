@@ -1,3 +1,10 @@
+// handle reject promises global, which does not occur in express app
+process.on('uncaughtException', (error) => {
+    console.log(error.name, error.message);
+    console.log('uncaughtException Rejection occured. Application is shutting down');
+    // exit the application
+    process.exit(1);
+});
 //import dotenv packege
 const dotenv = require('dotenv');
 // Registered our env to nodejs process. This should the fist before anything else
@@ -24,8 +31,21 @@ mongoose.connect(process.env.DB_CONNECTION_LOCAL_URL, { useNewUrlParser: true })
 // use the value from env file 
 const port = process.env.PORT
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     // console.log(app.get('env')); // express environment variable  
     // console.log(process.env); // node environment variable
     console.log('Server has started and running at http://127.0.0.1:' + port);
 });
+
+// handle reject promises global, which does not occur in express app
+process.on('unhandledRejection', (error) => {
+    console.log(error.name, error.message);
+    console.log('Unhandled Rejection occured. Application is shutting down');
+    server.close(() => {
+
+        // exit the application
+        process.exit(1);
+    });
+
+});
+

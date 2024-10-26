@@ -48,3 +48,7 @@ The Query takes  26 milliseconds
 The Query takes  32 milliseconds 
 The Query takes  33 milliseconds 
 The Query takes  27 milliseconds 
+The Query takes  38 milliseconds 
+The Query takes  49 milliseconds 
+New Movie with name The Dark Knigh 3t has been created by David Daniel on Sat Oct 26 2024 21:01:19 GMT+0300 (East Africa Time);
+The Query takes  41 milliseconds 

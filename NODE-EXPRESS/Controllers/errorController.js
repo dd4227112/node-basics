@@ -25,14 +25,17 @@ const castErrorHandler = (error) => {
     return new CustomError(message, 404);
 }
 const validatorErrorHandler = (error) => {
-    const errors = Object.values(error.errors).map(val => val.message).join('. ');
-  
-
-    return new CustomError(errors, 400);
+    const errors = Object.values(error.errors).map(val => val.message);
+    const errorMessage = errors.join('. ');
+    return new CustomError(errorMessage, 400);
 }
 const duplicateErrorHandler = (error) => {
-    const message = `Duplicate value ${error.keyValue.name} for movie name`;
+    // const message = `Duplicate value ${error.keyValue.name} for movie name`;
+    const message = `Validation error occured`;
     return new CustomError(message, 400);
+}
+const jwtError = (error) => {
+    return new CustomError(error.message, 401)
 }
 module.exports = (error, request, response, next) => {
     error.statusCode = error.statusCode || 500; // if no status code set , use 500 as default
@@ -46,6 +49,9 @@ module.exports = (error, request, response, next) => {
             error = castErrorHandler(error);
         } else if (error.name === 'ValidationError') {
             error = validatorErrorHandler(error);
+        }
+        else if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            error = jwtError(error);
         }
         else if (error.code = 11000) {
             error = duplicateErrorHandler(error);

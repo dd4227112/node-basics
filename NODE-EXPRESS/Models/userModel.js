@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -42,7 +43,10 @@ const userSchema = new mongoose.Schema({
             message: 'Passwords do not match'
         },
         select: false
-    }
+    },
+    passwordResetToken: String,
+
+    tokenExpire: Date
 
 });
 
@@ -59,6 +63,13 @@ userSchema.pre('save', async function (next) {
 // create a method that will be available in all instance of user model
 userSchema.methods.checkUserPassword = async function (userPassword, paswordInDatabase) {
     return await bcrypt.compare(userPassword, paswordInDatabase);
+}
+// create a reset pass token method using crypto library
+userSchema.methods.createResetPasswordToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    this.tokenExpire = Date.now() + (10 * 60 * 1000); // take current time and add 10 minutes (converted to milliseconds)
+    return resetToken // we send a plain token to user but we save a encrypted token in  the database
 }
 
 const User = mongoose.model('User', userSchema);

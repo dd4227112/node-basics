@@ -118,3 +118,27 @@ module.exports.authorize = (...role) => {
         next();
     }
 }
+
+//forget Pasword
+module.exports.forgetPasword = asyncErrorHandler(async (req, res, next) => {
+    //1. find user by email
+    const email = req.body.email;
+    if (!email) return next(new CustomError('Please provide your email'), 401);
+
+    const user = await User.findOne({ email });
+
+    if (!user) return next(new CustomError('No user registered with this email'), 401);
+
+    //2. create reset token and update token and expire in the database
+    //2.1 generate token 
+    const token = user.createResetPasswordToken();
+
+    //2.2 save in the database by disable validation
+    await user.save({ validateBeforeSave: false });
+    // send email to user with a reset link
+
+});
+// resetPasword
+module.exports.resetPasword = (req, res, next) => {
+    // check email and token, and update user password
+} 

@@ -17,7 +17,7 @@ router.route('/')
 router.route('/:id/:name?')  // we name parameter as on option by adding ? mark
     .get(authController.AuthMiddleware, apiActions.getMovieById)
     .patch(authController.AuthMiddleware, apiActions.updateMovieById)
-    .delete(authController.AuthMiddleware, apiActions.deleteMovieById)
+    .delete(authController.AuthMiddleware, authController.authorize('admin'), apiActions.deleteMovieById) // we added  authController.authorize('admin') middleware which check if user is admin who can delete a user
 
 //export modules
 module.exports = router;

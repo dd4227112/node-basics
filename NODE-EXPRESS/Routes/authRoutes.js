@@ -9,7 +9,7 @@ router.route('/')
 router.route('/:id')
     .get(authController.AuthMiddleware, authController.getUser)
     .patch(authController.AuthMiddleware, authController.updateUser)
-    .delete(authController.AuthMiddleware, authController.deleteUser);
+    .delete(authController.AuthMiddleware,  authController.authorize('admin'), authController.deleteUser); // we added  authController.authorize('admin') middleware which check if user is admin who can delete a user
 
 router.route('/login').post(authController.loginUser);
 router.route('/logout').get(authController.AuthMiddleware, authController.logoutUser);

@@ -89,12 +89,32 @@ module.exports.AuthMiddleware = asyncErrorHandler(async (req, res, next) => {
     //user jwt verify function to verfiy the token, but this function run async but does not return a promise. To make it return a promisse we use nodejs util library with promisify function
     const decodeToken = await util.promisify(jwt.verify)(token, process.env.JWT_SECRETE);
     // 3. check if user exist
-    const user = User.findOne({ _id: decodeToken.id, email: decodeToken.email });
+    const user = await User.findOne({ _id: decodeToken.id, email: decodeToken.email });
     if (!user) return next(new CustomError('User with the given token doesn\'t exist', 401));
 
     //4.check if user changed the password after token is issued
 
     //5. Allow user to acces the route
+    req.user = user;  // we haved added user object to request object so that we can use it in the next request if needed
     next();
 
 });
+// module.exports.authorize = (role) => { // since middleware can't accept more than three prameters(req, res, next), we create a wrapper function which wil receive the fourth paramter and return  our middleware
+//     return (req, res, next) => {
+//         if (!req.user.role === role) {
+//             return next(new CustomError('Access denied to this action', 403)); // forbidden
+//         }
+//         next();
+//     }
+// }
+// for multiple roles, we can use rest parameters and this will return a string of roles as array ('user', 'admin', 'coordinator)
+module.exports.authorize = (...role) => {
+
+    return (req, res, next) => {
+        console.log(req.user);
+        if (!role.includes(req.user.role)) { // check if user role is among of the array values
+            return next(new CustomError('Access denied to this action', 403)); // forbidden
+        }
+        next();
+    }
+}

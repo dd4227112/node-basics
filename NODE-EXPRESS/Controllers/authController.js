@@ -3,7 +3,8 @@ const sendMail = require('../Utils/Email');
 const User = require('./../Models/userModel');
 const asyncErrorHandler = require('./../Utils/asyncError')
 const jwt = require('jsonwebtoken');
-const util = require('node:util')
+const util = require('node:util');
+const crypto = require('crypto');
 
 // reusable function to create jwt token 
 const signInToken = (id, email) => {
@@ -40,6 +41,7 @@ module.exports.getUser = asyncErrorHandler(async (req, res, next) => {
 
 });
 module.exports.updateUser = asyncErrorHandler(async (req, res, next) => {
+    console.log('user here');
 
 });
 module.exports.deleteUser = asyncErrorHandler(async (req, res, next) => {
@@ -138,7 +140,7 @@ module.exports.forgetPasword = asyncErrorHandler(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
     // send email to user with a reset link
     const resetLink = `${process.env.PROTOCAL}://${req.get('host')}${process.env.PREFIX}users/resetPasword/${token}`;
-    const message = `We have a reset password request. Please use the below link to reset your password \n ${resetLink} or Click<a href="${resetLink}"> RESET PASSWORD </a>\n\nThis link will expire after 10 minutes.`;
+    const message = `We have a reset password request. Please use the below link to reset your password <br><br> ${resetLink} <br>Or Click<a href="${resetLink}"> RESET PASSWORD </a><br><br> This link will expire after 10 minutes.`;
     const subject = "Reset Password Link";
     // pass this option in sendMail() to send email
     try {
@@ -161,6 +163,49 @@ module.exports.forgetPasword = asyncErrorHandler(async (req, res, next) => {
 
 });
 // resetPasword
-module.exports.resetPasword = (req, res, next) => {
+module.exports.resetPasword = asyncErrorHandler(async (req, res, next) => {
     // check email and token, and update user password
-} 
+    //since the token was encryped, let us encrypt then compare it
+    passwordResetToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    const user = await User.findOne({
+        passwordResetToken,
+        tokenExpire: {
+            $gt: Date.now()
+        }
+    })
+    if (!user) return next(new CustomError('Invalid Token or Token has expired'), 401);
+    if (!req.body.confirmPassword || !req.body.password) return next(new CustomError('Password or Confirm Password are required'), 401);
+
+    user.password = req.body.password;
+    user.passwordResetToken = undefined;
+    user.tokenExpire = undefined;
+    user.passwordChangedAt = Date.now();
+    //update and send response
+    await createUserResponse(user, res);
+});
+module.exports.changePassword = asyncErrorHandler(async (req, res, next) => {
+    //check if user has posted cuurent password
+    if (!req.body.currentPassword) return next(new CustomError('Please provide your current password'), 401);
+    // fetch user details
+    const user = await User.findOne({ _id: req.user._id }).select('+password');
+
+    if (! await user.checkUserPassword(req.body.currentPassword, user.password)) {
+        return next(new CustomError('Incorrect current password'), 401);
+    }
+    //  if (req.body.confirmPassword !== req.body.password) return next(new CustomError('Password do not match'), 401);
+
+    user.password = req.body.password;
+    user.confirmPassword = req.body.confirmPassword;
+    await createUserResponse(user, res);
+});
+
+const createUserResponse = async (user, res) => {
+    await user.save();
+    token = signInToken(user._id, user.email);
+
+    res.status(200).json({
+        status: "success",
+        token
+    });
+}

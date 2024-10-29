@@ -1,4 +1,5 @@
 const CustomError = require('../Utils/CustomError');
+const sendMail = require('../Utils/Email');
 const User = require('./../Models/userModel');
 const asyncErrorHandler = require('./../Utils/asyncError')
 const jwt = require('jsonwebtoken');
@@ -136,6 +137,27 @@ module.exports.forgetPasword = asyncErrorHandler(async (req, res, next) => {
     //2.2 save in the database by disable validation
     await user.save({ validateBeforeSave: false });
     // send email to user with a reset link
+    const resetLink = `${process.env.PROTOCAL}://${req.get('host')}${process.env.PREFIX}users/resetPasword/${token}`;
+    const message = `We have a reset password request. Please use the below link to reset your password \n ${resetLink} or Click<a href="${resetLink}"> RESET PASSWORD </a>\n\nThis link will expire after 10 minutes.`;
+    const subject = "Reset Password Link";
+    // pass this option in sendMail() to send email
+    try {
+        await sendMail({
+            email,
+            subject,
+            message
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Password Reset link sent to your email account!",
+        })
+
+    } catch (error) {
+        user.passwordResetToken = undefined;
+        user.tokenExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(new CustomError(error.message, 500));
+    }
 
 });
 // resetPasword

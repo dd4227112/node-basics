@@ -32,3 +32,4 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 29. You can use javascript validator library to validate user inputs on model schema and etc. This library work on for string data types Run npm install validator
 30. We can encrypt password using bcryptjs libary ( nmp install bcryptjs)
 31. We use Json Web Token (JWT) to sign in user and provide a access token (npm install jsonwebtoken)
+32. We send email in nodejs using nodemailer via transporter service(Eg Gmail, MailGun etc ).  I use a maitrap for development purpose. Run (npm install nodemailer) to install

@@ -33,3 +33,7 @@ https://www.youtube.com/watch?v=5eaBOxXABkU&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_L
 30. We can encrypt password using bcryptjs libary ( nmp install bcryptjs)
 31. We use Json Web Token (JWT) to sign in user and provide a access token (npm install jsonwebtoken)
 32. We send email in nodejs using nodemailer via transporter service(Eg Gmail, MailGun etc ).  I use a maitrap for development purpose. Run (npm install nodemailer) to install
+33. We can use express-rate-limit and express-slow-down to prevent brute-force attack and DOS attach in nodejs application using express. (Run npm install express-rate-limit express-slow-down). Then create a global middleware rateLimit() and slowDown();
+34. We can user express helmet middleware to secure http response headers by setting a standard header ( npm install helmet)
+35 . We can use express-MongoDB-sanitize, to  sanitizes user-supplied data to prevent MongoDB Operator ($, .) Injection. (npm install express-mongo-sanitize)
+35. We use express-xss-sanitizer package to run data sanitization to prevent cross-site attack i.e   introducing javascript malcious code  in the request body, header, params and query ( run npm install express-xss-sanitizer) ( before was xss-clean now deplicated)

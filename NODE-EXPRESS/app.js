@@ -1,6 +1,7 @@
 const express = require('express');
 const moviesRoutes = require('./Routes/moviesRoutes')
 const authRoutes = require('./Routes/authRoutes')
+const userRoutes = require('./Routes/userRoutes')
 const app = express();
 const morgan = require('morgan');
 const CustomError = require('./Utils/CustomError');
@@ -84,7 +85,8 @@ const prefix = process.env.PREFIX // use environment varibale
 
 // mount routes
 app.use(prefix + 'movies', moviesRoutes)
-app.use(prefix + 'users', authRoutes);
+app.use(prefix + 'auth', authRoutes);
+app.use(prefix + 'users', userRoutes)
 // define the defaiult route which will be excuted when the route doesn't match any other route (not found). Remember this be defined as the last routes
 app.all('*', (req, res, next) => {
     // we are going to use global error handling middleware

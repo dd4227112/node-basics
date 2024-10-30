@@ -47,8 +47,13 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: String,
 
     tokenExpire: Date,
-    
-    passwordChangedAt: Date
+
+    passwordChangedAt: Date,
+
+    isActive: {
+        type: Boolean,
+        default: true
+    }
 
 
 });
@@ -63,6 +68,17 @@ userSchema.pre('save', async function (next) {
     this.confirmPassword = undefined;
     next();
 });
+
+userSchema.pre(/^find/, function (next) {
+    // this.find({
+    //     isActive: true
+    // });
+    this.find({
+        isActive: { $ne: false } // where isActive not equal to false
+    })
+    next();
+});
+
 // create a method that will be available in all instance of user model
 userSchema.methods.checkUserPassword = async function (userPassword, paswordInDatabase) {
     return await bcrypt.compare(userPassword, paswordInDatabase);

@@ -72,3 +72,13 @@ The Query takes  110 milliseconds
 The Query takes  22 milliseconds 
 The Query takes  17 milliseconds 
 The Query takes  24 milliseconds 
+The Query takes  7 milliseconds 
+The Query takes  2 milliseconds 
+The Query takes  5 milliseconds 
+The Query takes  9 milliseconds 
+The Query takes  14 milliseconds 
+The Query takes  8 milliseconds 
+The Query takes  6 milliseconds 
+The Query takes  6 milliseconds 
+The Query takes  6 milliseconds 
+The Query takes  6 milliseconds 

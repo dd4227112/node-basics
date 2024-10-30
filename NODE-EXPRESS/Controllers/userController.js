@@ -29,6 +29,7 @@ module.exports.createUser = asyncErrorHandler(async (req, res, next) => {
 });
 
 module.exports.getAllUsers = asyncErrorHandler(async (req, res, next) => {
+    console.log(req)
     const users = await User.find();
     res.status(200)
         .json({

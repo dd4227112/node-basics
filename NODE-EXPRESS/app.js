@@ -2,10 +2,18 @@ const express = require('express');
 const moviesRoutes = require('./Routes/moviesRoutes')
 const authRoutes = require('./Routes/authRoutes')
 const userRoutes = require('./Routes/userRoutes')
-const app = express();
 const morgan = require('morgan');
 const CustomError = require('./Utils/CustomError');
 const errorController = require('./Controllers/errorController');
+const rateLimit = require('express-rate-limit'); // this return a function, so wil user rateLimit() directly
+const slowDown = require('express-slow-down');  // this also return a function 
+const helmet = require('helmet'); // this also return a function 
+const mongooseSanitize = require('express-mongo-sanitize');
+const { xss } = require('express-xss-sanitizer'); // it return an object
+const hpp = require('hpp'); // http parameter pollution
+
+const app = express();
+
 
 /* ES MODULE
     import express  from 'express'
@@ -13,16 +21,109 @@ const errorController = require('./Controllers/errorController');
     const app = express();
 */
 // MIDDLEWERE 
+
+// 1. HELMET 
+// Secure response header by setting standard headers. Eg X-... headers are not standard header (advice to at the top so that to set a header early before trying to send any response )
+const expressHelmet = helmet(
+    // You can add header setting value to modify the default value set by helmet
+    // {
+    //     contentSecurityPolicy: false,
+    //     xDownloadOptions: false,
+    // }
+);
+app.use(expressHelmet)
+
+//2. RATE LIMIT
+// Rate limit middleware ( maxmun of 5 requests in 1 minute for single IP address)
+const rateLimiter = rateLimit({
+    windowMs: 60 * 1 * 1000, // 1 minute
+    max: 5,
+    message: " Too many request.Please pause and try again later",
+});
+app.use(rateLimiter); // we can apply  rate limit to all endpoint or specific end like done below
+// app.use('/api', rateLimiter);  // apply to only endpoint that start /api ...
+// 3. SLOW DOWN
+// Example, Within 15 minutes (windowMs),  after the first request (delayAfter), each request  next will delay for 2 seconds (delayMs)
+const downSlower = slowDown({
+    windowMs: 15 * 60 * 1000,
+    delayAfter: 1,
+    delayMs: () => 2000
+});
+// app.use('/api', downSlower);
+app.use(downSlower);
+
 // use json() middleware to add request body to request object
-app.use(express.json());
-process.env.ENVIRONMENT === 'development' ? app.use(morgan('dev')) : '' // morgan is not function middleware, it return the function middleware, so we call the function morgan()
+app.use(express.json({ limit: '10kb' })); // limit the request to accept and process 10KB of data. This help to secure DOS by specifying the amount of data
+
+//4. DATA SANITIZATION ( This should be used after we have received a data) i.e after app.user(express.json())
+// 4.1 expresss-mongo-sanitizer
+// Add  data sanitization to prevent nosql injection (eg passing {$get:''} on the request body) 
+const sanitizer = mongooseSanitize(
+    // you can use some option to handle $ and . which  by default are removed
+    // {
+    //     replaceWith: '_', // replace  $ and . with _,
+    //     allowDots: true, // allow . ,
+    //     onSanitize: ({ req, key }) => { // you can pass a callback function like this
+    //         console.warn(`This request[${key}] is sanitized`, req);
+    //     },
+    // }
+);
+app.use(sanitizer);
+
+// 4.2 express-xss-sanitizer
+// Add  data sanitization to prevent cross site attack i.e   introducing javascript malcious code  in the request body, header, params and query
+
+//You can add options to specify allowed keys or allowed attributes to be skipped at sanitization
+
+// const options = {
+//     allowedKeys: ['name'],
+//     allowedAttributes: {
+//         input: ['value'],
+//     },
+// }
+// Example: const options = {
+//     allowedTags: ['h1']
+// }
+// app.use(xss(options));
+
+app.use(xss());
+
+//5. HPP (http parameter pollution)
+// It prevent paramter pollution on the request parameter. We can define a parameters which we want to whitelist
+const whitelistOptions = [
+    'duration',
+    'name',
+    'ratings',
+    'releaseYear',
+    'releaseDate',
+    'genres',
+    'directors',
+    'actors',
+    'price',
+    'createdBy',
+    'page',
+    'sort',
+    'limit',
+    'fields'
+];
+const hppMiddlware = hpp(
+    {
+        whitelist: whitelistOptions
+    }
+);
+app.use(hppMiddlware);
+
 app.use(express.static('./public')) // apply the static express middleware to save the static file by passing the path of the static files
+
+
+process.env.ENVIRONMENT === 'development' ? app.use(morgan('dev')) : '' // morgan is not function middleware, it return the function middleware, so we call the function morgan()
 
 // our custom middleware
 function addCreatedAt(request, response, next) {
     request.createdAt = new Date().toISOString() // return date as staring value in ISO format
     next(); //call next function to excute next middleware
 }
+app.use(addCreatedAt);
 
 // routes = url + method
 // GET REQUESTS/ROUTES

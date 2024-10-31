@@ -29,6 +29,17 @@ module.exports.loginUser = asyncErrorHandler(async (req, res, next) => {
 
     //create a token
     const token = signInToken(user._id, user.email);
+    //  store token in the cookies , this will prevent x-site attack since token will not be stored in browser's local storage
+    let options = {
+        maxAge: process.env.TOKEN_EXPIRE,
+        httpOnly: true // cookies can not be read or modified by any browser
+    }
+    if (process.env.ENVIRONMENT === 'production') {
+        options.secure = true //set security true means over https  protocals only, Usually in production environment 
+    }
+    res.cookie('jwtToken', token, options
+    );
+
     res.status(200).json({
         status: "success",
         token,
@@ -152,6 +163,16 @@ module.exports.resetPasword = asyncErrorHandler(async (req, res, next) => {
 const createUserResponse = async (user, res) => {
     await user.save();
     token = signInToken(user._id, user.email);
+    //  store token in the cookies , this will prevent x-site attack since token will not be stored in browser's local storage
+    let options = {
+        maxAge: process.env.TOKEN_EXPIRE,
+        httpOnly: true // cookies can not be read or modified by any browser
+    }
+    if (process.env.ENVIRONMENT === 'production') {
+        options.secure = true //set security true means over https  protocals only, Usually in production environment 
+    }
+    res.cookie('jwtToken', token, options
+    );
 
     res.status(200).json({
         status: "success",
